@@ -1,0 +1,12 @@
+{
+	"usuarios": [
+		{
+			"nivel": "2",
+			"nome": "beto",
+			"cpf": "444.444.444-44",
+			"telefone": "(12) 3922-0902",
+			"login": "betonoronha",
+			"senha": "123456"
+		}
+	]
+}

@@ -1,0 +1,115 @@
+@font-face {
+  font-family: "IndieFlower";
+  src: url("../fonts/IndieFlower.ttf");
+ }
+
+/* SLIDE - BANNER */
+.carousel, .carousel-item img{
+	height: 550px;
+}
+
+/* BOX OPCOES HOME */ 
+.box-opcoes-diaria {
+	margin: 50px auto;
+}
+
+.box-opcoes-diaria h1 {
+	text-align: center;
+	color: red;
+	font-size: 3em;
+}
+.box-opcoes-diaria p.subtitle {
+	font-size: 2em;
+	text-align: center;
+	font-family: IndieFlower;
+	font-weight: 600;
+}
+
+.box-opcoes-diaria .box {
+	box-shadow: 0px 0px 4px #666;
+	margin-top: 40px;
+	border-radius: 10px;	
+}
+.box-opcoes-diaria .box:hover {
+	background: rgba(0,0,0, 0.1);
+	box-shadow: 0px 0px 4px #999;
+}
+
+.box-opcoes-diaria .box h2 {
+	text-align: center;
+	background: #ccc;
+	padding: 20px;
+	color: rgba(255, 0, 0, 0.8);
+	font-size: 1.5em;
+	text-transform: uppercase;
+	font-weight: 500;
+	border-bottom: 1px solid #999;
+	border-radius: 10px 10px 0 0;
+}
+.box-opcoes-diaria .box h3 {
+	padding: 15px 0 20px 20px;
+	color: #000;
+	font-size: 1.5em;
+	font-weight: 600;
+}
+
+.box-opcoes-diaria .btn {
+	margin: 20px auto 20px auto;
+	color: #FFF;
+}
+
+/* PRECOS */
+.precos {
+	padding: 25px 0 10px 0;
+}
+.precos h1{
+	color: #000;
+	text-align: center;
+	font-size: 2em;
+	margin-bottom: 20px;
+}
+.precos p {
+	font-size: 1.8em;
+	text-align: center;
+}
+
+.precos .form_pagamento {
+	text-align: center;
+	font-size: 3em;
+}
+
+/* RESPOSIVO */
+@media (max-width: 800px){
+	.box-opcoes-diaria h1 {
+		font-size: 2em;
+	}
+		
+	.box-opcoes-diaria p.subtitle {
+		font-size: 1.4em;
+	}
+}
+
+@media (max-width: 600px){
+	
+	.precos p {
+		font-size: 1.3em;
+	}
+	
+	.precos .form_pagamento {
+		font-size: 2.5em;
+	}
+}
+
+@media (max-width: 410px){
+	.box-opcoes-diaria h1 {
+		font-size: 1.7em;
+	}
+	
+	.box-opcoes-diaria p.subtitle {
+		font-size: 1em;
+	}
+	
+	.precos p {
+		font-size: 1em;
+	}
+}

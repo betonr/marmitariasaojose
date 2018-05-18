@@ -1,0 +1,12 @@
+.dashboard {
+	padding: 50px 0;
+	border-top: 1px solid #ddd;	
+}
+
+.dashboard .formEndereco {
+	padding: 25px 40px 10px 40px;
+}
+
+.dashboard .formMinhasInfos {
+	padding: 0px 40px 10px 40px;
+}

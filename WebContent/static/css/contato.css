@@ -1,0 +1,26 @@
+.contato {
+	border-top: 1px solid #ccc;	
+}
+
+.contato .titulo-page {
+	padding: 30px 10%;
+	background: url('../images/contato.jpg') no-repeat center;
+	text-align: center;
+	color: #FFF;
+	text-shadow: 0px 0px 5px #000;
+	font-weight: 700;
+	margin-bottom: 40px;
+}
+
+.contato article {
+	padding: 25px 20px;
+}
+
+.contato article .localizacao {
+	box-shadow: 0px 0px 5px #ccc;
+	margin-bottom: 30px;
+}
+
+.contato article .fale-conosco {
+	padding: 25px;
+}
