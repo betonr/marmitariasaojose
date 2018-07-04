@@ -1,7 +1,6 @@
 class PedidoController {
 	
 	constructor(){
-		this.pedidos = [];
 		this.pedido = [];
 		
 		this.msg = "";
@@ -38,50 +37,69 @@ class PedidoController {
 			$(".cadPedido #msgerro").append(`<span class='msg'>${this.msg}</span>`).fadeIn();	
 			
 		} else {
-			this.pedidos.push({
+			let solicitacao = {
 				produtos: this.pedido,
 				data: new Date(),
 				status: 1
-			})
+			}
 			
-			this.pedido = []
-			this._renderizaLista()
-			this._limpaForm()
+			let vm = this
+			$.ajax({
+	            url: '/marmitariasj/solicitacao',
+	            type: 'post',
+	            dataType: 'json',
+	            contentType: 'application/json;charset=UTF-8',
+	            success: function (data) {
+	                if(data.status==true) {
+	                	vm.pedido = []
+	                	vm._renderizaLista()
+	        			vm._limpaForm()
+	        			
+	        			vm._limpaMsg()		
+	        			vm.msg = "Pedido cadastrado com Sucesso!";
+	        			$(".cadPedido #msgacerto").append(`<span class='msg'>${vm.msg}</span>`).fadeIn();
+	                }
+	            },
+	            error: function (error) {
+	            	console.log(error)
+	            },
+	            data: JSON.stringify(solicitacao)
+	        });
 			
-			this._limpaMsg()		
-			this.msg = "Pedido cadastrado com Sucesso!";
-			$(".cadPedido #msgacerto").append(`<span class='msg'>${this.msg}</span>`).fadeIn();
 		}
 	}
 	
 	filtraPedido(event) {
 		event.preventDefault();
-		
-		this._getPedidos();
+		this._getPedidos();		
 	}
 	
 	_getPedidos(){
-		
 		let dataForm = $("#filtroDataPedido").val();
 		let date = new Date(dataForm);
-		let dataEsc = (date.getDate()+1)+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
-		
+		let dateEsc = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+(date.getDate()+1)
 		this._limpaMsg();
 
 		if(new Date(dataForm) <= new Date()) {
-			let pedidos = []
-			this.pedidos.map( pedido => {
-				let dataPed = pedido.data.getDate()+"/"+(pedido.data.getMonth()+1)+"/"+pedido.data.getFullYear();
-				
-				if(dataPed == dataEsc) pedidos.push(pedido) 
-			})
 			
-			if(pedidos.length <= 0){
-				this.msg = "Não encontramos nenhum pedido com a data: "+dataEsc;
-				$(".visPedido #msgerro").append(`<span class='msg'>${this.msg}</span>`).fadeIn();
-			}
-			
-			this._renderizaPedidos(pedidos)
+			let vm = this
+			$.ajax({
+	            url: '/marmitariasj/solicitacao?data='+dateEsc,
+	            type: 'get',
+	            dataType: 'json',
+	            contentType: 'application/json;charset=UTF-8',
+	            success: function (data) {
+	            	if(data.length <= 0){
+	    				vm.msg = "Não encontramos nenhum pedido com a data: "+dateEsc;
+	    				$(".visPedido #msgerro").append(`<span class='msg'>${vm.msg}</span>`).fadeIn();
+	    			}			
+	            	vm._renderizaPedidos(data)
+	                
+	            },
+	            error: function (error) {
+	                console.log(error)
+	            }
+	        });
 			
 		} else {
 			this.msg = "Selecione um data válida, até o dia de hoje!";
@@ -90,9 +108,40 @@ class PedidoController {
 			
 	}
 	
-	chegouPedido(indicePed) {
-		this.pedidos[indicePed].status = 2;
-		this._getPedidos();
+	chegouPedido(indiceSolicitacao) {
+		let id = indiceSolicitacao
+		let status = 2
+		
+		let vm = this
+		$.ajax({
+            url: '/marmitariasj/solicitacao',
+            type: 'put',
+            dataType: 'json',
+            contentType: 'application/json;charset=UTF-8',
+            success: function (data) {
+            	vm._getPedidos()
+            },
+            error: function (error) {
+            	console.log(error)
+            },
+            data: JSON.stringify({id, status})
+        });
+	}
+	
+	removerPedido(indiceSolicitacao) {
+		let vm = this
+		$.ajax({
+            url: '/marmitariasj/solicitacao?id='+indiceSolicitacao,
+            type: 'delete',
+            dataType: 'json',
+            contentType: 'application/json;charset=UTF-8',
+            success: function (data) {
+            	vm._getPedidos()
+            },
+            error: function (error) {
+            	console.log(error)
+            }
+        });
 	}
 	
 	confirmaPedido(indicePed) {		
@@ -102,7 +151,6 @@ class PedidoController {
 			$('#tabelaConfirmPedidos tbody tr[id="'+indicePed+'"]').remove()			
 			alert('produto '+indicePed+' acaba de ser confirmado')
 		}		
-		
 	}
 	
 	recusaPedido(indicePed) {	
@@ -110,7 +158,6 @@ class PedidoController {
 			$('#tabelaConfirmPedidos tbody tr[id="'+indicePed+'"]').remove()			
 			alert('produto '+indicePed+' acaba de ser recusado')
 		}
-		
 	}
 	
 	//INTERNAS
@@ -132,11 +179,11 @@ class PedidoController {
 		else $('#tabelaPedido').fadeOut();
 	}
 	
-	_renderizaPedidos(pedidos) {
+	_renderizaPedidos(solicitacao) {
 		let tabelaResp = "";
 		
-		pedidos.map( (pedido, indice) => {
-			let data = pedido.data.getDate()+"/"+(pedido.data.getMonth()+1)+"/"+pedido.data.getFullYear();
+		solicitacao.map( pedido => {
+			let data = pedido.data;
 			
 			tabelaResp += "<tr>";
 			tabelaResp += `<td scope="row">${data}</td>`;
@@ -144,7 +191,7 @@ class PedidoController {
 			//descrição
 			let descricao = ""
 			pedido.produtos.map( produto => {
-				descricao += produto.quantidade+" "+produto.opcao+"("+produto.tamanho+")"+" - "+produto.obs+"<br>";		
+				descricao += produto.quantidade+" "+produto.opcao+"("+produto.tamanho+")"+" - "+produto.observacao+"<br>";		
 			})
 			tabelaResp += `<td>${descricao}</td>`;
 			
@@ -154,12 +201,13 @@ class PedidoController {
 				tabelaResp += `<td><button type="button" class="btn" disabled>SIM</button></td>`;
 				
 			} else if(pedido.status == 1) {
-				tabelaResp += `<td><button type="button" onClick="mapController.verPosicao(${indice})" data-toggle="modal" data-target=".modal-mapa" class="btn btn-warning"><span class="fa fa-search"></span></button></td>`;
-				tabelaResp += `<td><button type="button" onClick="pedidoController.chegouPedido(${indice})" class="btn btn-success">SIM</button></td>`;
+				tabelaResp += `<td><button type="button" onClick="mapController.verPosicao(1)" data-toggle="modal" data-target=".modal-mapa" class="btn btn-warning"><span class="fa fa-search"></span></button></td>`;
+				tabelaResp += `<td><button type="button" onClick="pedidoController.chegouPedido(${pedido.id})" class="btn btn-success">SIM</button></td>`;
 				
 			} else if(pedido.status == 2){
 				tabelaResp += `<td>Pedido finalizado! </td>`;
-				tabelaResp += `<td><button type="button" class="btn" disabled>SIM</button></td>`;
+				tabelaResp += `<td><button type="button" class="btn" style="margin-right: 10px;" disabled>SIM</button>`;
+				tabelaResp += `<button type="button" onClick="pedidoController.removerPedido(${pedido.id})" class="btn btn-danger">Remover</button></td>`;
 			}
 			
 			tabelaResp += "</tr>";
@@ -167,7 +215,7 @@ class PedidoController {
 		
 		$('#tabelaPedidos tbody').html(tabelaResp);
 		
-		if(pedidos.length > 0) $('#tabelaPedidos').fadeIn();
+		if(solicitacao.length > 0) $('#tabelaPedidos').fadeIn();
 		else $('#tabelaPedidos').fadeOut();
 	}
 	
@@ -192,7 +240,6 @@ class PedidoController {
 		
 		$(".visPedido #msgacerto").fadeOut();
 		$(".visPedido #msgerro").fadeOut();
-		
 	}
 	
 }

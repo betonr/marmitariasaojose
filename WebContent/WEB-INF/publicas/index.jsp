@@ -84,7 +84,7 @@
 				<span class="fa fa-cc-mastercard"></span>
 			</div>
 		</div>
-	
+
 		<div class="row justify-content-center">
 			<a href="/marmitariasj/public/cardapio" class="btn btn-warning btn-lg">&#10010; Veja o nosso cardápio COMPLETO</a>
 		</div>

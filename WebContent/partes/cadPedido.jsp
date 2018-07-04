@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <div class="cadPedido">
 
 	<form onsubmit="pedidoController.cadProduto(event)" method="post" class="FormCadProduto">
@@ -26,15 +28,16 @@
 			</table>
 			
 			<br/> 
-			
+			<c:out value="${param.title}"/>
 		    <div class="row justify-content-center">
 			    <div class="col-6 col-sm-3">
 			      <div class="form-group">
 				     <label class="col-form-label">Opções:</label>
 				     <select id="opcao" class="form-control" required>
 				     	<option value="" selected disabled>Selecione uma Opção</option>
-				     	<option value="feijoada"> Feijoada </option>
-				     	<option value="filé-frango"> Filé de frango </option>
+						<c:forEach items="${produtos}" var="produto">
+			    			<option value="${produto.getNumero_opcao()}">${produto.getTitulo()}</option>
+						</c:forEach>     	
 				     </select>
 				  </div>
 			    </div>
@@ -44,8 +47,9 @@
 				     <label class="col-form-label">Tamanho:</label>
 				     <select id="tamanho" class="form-control" required>
 				     	<option value="" selected disabled>Selecione um Tamanho</option>
-				     	<option value="mini">MINI</option>
-				     	<option value="normal">NORMAL</option>
+				     	<c:forEach items="${tamanhos}" var="tamanho">
+			    			<option value="${tamanho.getId()}">${tamanho.getDescricao()}</option>
+						</c:forEach>
 				     </select>
 				  </div>
 			    </div>

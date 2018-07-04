@@ -13,10 +13,12 @@ import marmitariasj.Acao;
 
 @WebServlet(urlPatterns = "/usuario/*")
 public class Usuario extends HttpServlet{
-	
+
+	private static final long serialVersionUID = 1L;
+
 	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp)
-	        throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
+			throws ServletException, IOException {
 
 	    String acao = req.getRequestURI().substring(21).equals("/") || req.getRequestURI().substring(21).equals("")
 	    		?  "index" : req.getRequestURI().substring(22);
@@ -28,13 +30,13 @@ public class Usuario extends HttpServlet{
 	        Acao instancia = (Acao) type.newInstance();
 	        String pagina = instancia.executa(req, resp);
 
-	        RequestDispatcher requestDispatcher = req.getRequestDispatcher(pagina);
-	        requestDispatcher.forward(req, resp);
+	        RequestDispatcher destino = req.getRequestDispatcher(pagina);
+	        destino.forward(req, resp);
 	        
 	    } catch (Exception e) {
-	    	RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/publicas/404.jsp");
-	        requestDispatcher.forward(req, resp);
-	        		
+	    	RequestDispatcher destino = req.getRequestDispatcher("/WEB-INF/publicas/404.jsp");
+	    	destino.forward(req, resp);
+	     	
 	    }
 	}
 }

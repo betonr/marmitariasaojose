@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <div class="minhasInfos">
 
 	<form onsubmit="usuarioController.updateInfos(event)" method="post" class="formMinhasInfos">
