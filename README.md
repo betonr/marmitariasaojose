@@ -5,3 +5,6 @@ Aplicação web - projeto engenharia de software (marmitaria sao jose), realiza�
 * Servlet 
 * JSP
 * Postgres / Postgis
+
+## Diagramas
+* [pasta public](https://github.com/betonr/marmitariasaojose/tree/master/public)
