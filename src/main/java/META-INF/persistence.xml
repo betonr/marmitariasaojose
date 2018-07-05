@@ -5,14 +5,18 @@
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
     version="2.0">
 
-    <persistence-unit name="marmitaria-postgres">
+    <persistence-unit name="marmitaria">
 
         <!-- Implementação do JPA, no nosso caso Hibernate -->
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!-- Aqui são listadas todas as entidades -->
-        <class>model.Usuario</class>
+        <class>model.Pedido</class>
         <class>model.Pessoa</class>
+        <class>model.Produto</class>
+        <class>model.Solicitacao</class>
+        <class>model.Tamanho</class>
+        <class>model.Usuario</class>
 
         <properties>    
             <!-- Propriedades JDBC -->

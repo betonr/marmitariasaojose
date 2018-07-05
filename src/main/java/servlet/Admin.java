@@ -19,19 +19,29 @@ public class Admin extends HttpServlet{
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp)
 	        throws ServletException, IOException {
-
+		
 	    String acao = req.getRequestURI().substring(19).equals("/") || req.getRequestURI().substring(19).equals("")
 	    		?  "index" : req.getRequestURI().substring(20);
 	    
 	    try {
-	        String nomeDaClasse = "controller.Admin" + acao.substring(0, 1).toUpperCase() + acao.substring(1);
+	    	String nomeDaClasse = "controller.Admin" + acao.substring(0, 1).toUpperCase() + acao.substring(1);
 	        Class<?> type = Class.forName(nomeDaClasse);
 	        
 	        Acao instancia = (Acao) type.newInstance();
-	        String pagina = instancia.executa(req, resp);
-
-	        RequestDispatcher destino = req.getRequestDispatcher(pagina);
-	        destino.forward(req, resp);
+	        switch(req.getMethod()) {
+	        	case "GET":
+	        		instancia.get(req, resp);
+	        		break;
+	        	case "POST":
+	        		instancia.post(req, resp);
+	        		break;
+	        	case "PUT":
+	        		instancia.put(req, resp);
+	        		break;
+	        	case "DELETE":
+	        		instancia.delete(req, resp);
+	        		break;	
+	        }
 	        
 	    } catch (Exception e) {
 	    	RequestDispatcher destino = req.getRequestDispatcher("/WEB-INF/publicas/404.jsp");

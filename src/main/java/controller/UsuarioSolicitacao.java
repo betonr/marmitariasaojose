@@ -1,4 +1,4 @@
-package servlet;
+package controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,23 +8,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
+import marmitariasj.Acao;
 import model.Pedido;
 import model.Solicitacao;
 import persistencia.PedidoDAO;
 import persistencia.SolicitacaoDAO;
 
-@WebServlet(urlPatterns = "/solicitacao")
-public class Solicita extends HttpServlet{
-
-	private static final long serialVersionUID = 1L;
-	private static final long id_user = 1;
+public class UsuarioSolicitacao implements Acao {
 	
 	private java.sql.Date convertData(String data) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -36,23 +32,29 @@ public class Solicita extends HttpServlet{
 		}
         return new java.sql.Date(parsed.getTime());
 	}
-	
+
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
-			throws ServletException, IOException {
+	public void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		HttpSession session = req.getSession();  
+		model.Usuario usuario = (model.Usuario) session.getAttribute("usuario");
 		
 		String dataStr = req.getParameter("data");
 		java.sql.Date data = this.convertData(dataStr);
 		
 		SolicitacaoDAO solicitacaoDAO = new SolicitacaoDAO();
-		ArrayList<JSONObject> resposta = solicitacaoDAO.getByDataAndId(id_user, data);
+		ArrayList<JSONObject> resposta = solicitacaoDAO.getByDataAndId(usuario.getId(), data);
 		
 		PrintWriter out = resp.getWriter();
 		out.print(resposta.toString());
+		
 	}
-	
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
-			throws ServletException, IOException {
+
+	@Override
+	public void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+			
+		HttpSession session = req.getSession();  
+		model.Usuario usuario = (model.Usuario) session.getAttribute("usuario");
 		
 		//corpo da requisição
 		BufferedReader reader = req.getReader();		
@@ -60,7 +62,7 @@ public class Solicita extends HttpServlet{
 		
 		//criando uma solicitação
 		Solicitacao solicita = new Solicitacao();
-		solicita.setId_usuario(id_user);
+		solicita.setId_usuario(usuario.getId());
 		solicita.setStatus(infos.getInt("status"));
 		String dataStr = infos.getString("data").substring(0,infos.getString("data").indexOf("T"));
 		java.sql.Date data = this.convertData(dataStr);
@@ -95,10 +97,11 @@ public class Solicita extends HttpServlet{
 		StringBuilder resposta = new StringBuilder();
 		resposta.append("{\"status\": true}");
 		out.print(resposta.toString());
+		
 	}
-	
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp) 
-			throws ServletException, IOException {
+
+	@Override
+	public void put(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		//corpo da requisição
 		BufferedReader reader = req.getReader();
@@ -111,10 +114,11 @@ public class Solicita extends HttpServlet{
 		StringBuilder resposta = new StringBuilder();
 		resposta.append("{\"status\": true}");
 		out.print(resposta.toString());
+		
 	}
-	
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) 
-			throws ServletException, IOException {
+
+	@Override
+	public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		String id = req.getParameter("id");
 		
@@ -125,6 +129,9 @@ public class Solicita extends HttpServlet{
 		StringBuilder resposta = new StringBuilder();
 		resposta.append("{\"status\": true}");
 		out.print(resposta.toString());
+		
 	}
 	
+	
+
 }

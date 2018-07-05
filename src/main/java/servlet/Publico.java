@@ -28,10 +28,20 @@ public class Publico extends HttpServlet{
 	        Class<?> type = Class.forName(nomeDaClasse);
 	        
 	        Acao instancia = (Acao) type.newInstance();
-	        String pagina = instancia.executa(req, resp);
-
-	        RequestDispatcher destino = req.getRequestDispatcher(pagina);
-	        destino.forward(req, resp);
+	        switch(req.getMethod()) {
+	        	case "GET":
+	        		instancia.get(req, resp);
+	        		break;
+	        	case "POST":
+	        		instancia.post(req, resp);
+	        		break;
+	        	case "PUT":
+	        		instancia.put(req, resp);
+	        		break;
+	        	case "DELETE":
+	        		instancia.delete(req, resp);
+	        		break;	        		
+	        }
 	        
 	    } catch (Exception e) {
 	    	RequestDispatcher destino = req.getRequestDispatcher("/WEB-INF/publicas/404.jsp");

@@ -14,29 +14,28 @@ class AutenticacaoController {
 		this.senha = event.target.senha.value;
 		
 		const vm = this
-		$.getJSON("../external/usuarios.json", function(data) {
-			let usuarios = data.usuarios;
-	
-			vm._limpaMsg()	
-			let user = usuarios.filter( user => user.login == vm.login );
-			
-			if(user.length > 0){
-				if(user[0].senha == vm.senha){
-					window.location.href = `/marmitariasj/usuario/`;
-					// ou redireciona para o painel de adm
-					
-				}else {
-					this.msg = "Erro ao logar, SENHA incorreta!";
-					$(".login #msgerro").append(`<span class='msg'>${this.msg}</span>`).fadeIn();
-					
-				}
-				
-			} else {			
-				this.msg = "Erro ao logar, usuário não encontrado!";
-				$(".login #msgerro").append(`<span class='msg'>${this.msg}</span>`).fadeIn();
-				
-			}
-		})
+		this._limpaMsg() 
+		$.ajax({
+            url: '/marmitariasj/public/login',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json;charset=UTF-8',
+            success: function (data) {
+                if(data.status==true) {
+                	window.location.href = `/marmitariasj/usuario/`;
+                } else {
+                	vm.msg = "Erro ao logar, "+data.msg+"!";
+    				$(".login #msgerro").append(`<span class='msg'>${vm.msg}</span>`).fadeIn();
+                }
+            },
+            error: function (error) {
+            	console.log(error)
+            },
+            data: JSON.stringify({
+	            	login: vm.login,
+	            	senha: vm.senha
+	        })
+        });
 	
 	}
 	

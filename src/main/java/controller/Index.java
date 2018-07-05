@@ -1,5 +1,9 @@
 package controller;
 
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 //import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,19 +15,28 @@ import marmitariasj.Acao;
 public class Index implements Acao{
 
 	@Override
-    public String executa(HttpServletRequest request, HttpServletResponse response) {
+	public void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-//		EntityManager em = new FabricaJPA().getEntityManager();
-//		
-//		em.getTransaction().begin();
-//		
-//		Pessoa pessoa = em.find(Pessoa.class, 1);	
-//		System.out.println(pessoa.getNome_completo());
-//		
-//		em.getTransaction().commit();
-//		
-//		em.close();
+		RequestDispatcher destino = req.getRequestDispatcher("/WEB-INF/publicas/index.jsp");
+        destino.forward(req, resp);
 		
-        return "/WEB-INF/publicas/index.jsp";
-    }
+	}
+
+	@Override
+	public void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void put(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+	}
 }

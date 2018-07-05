@@ -38,7 +38,6 @@ public class Filtro implements Filter{
     		
     	} else if(subPath.indexOf("/public") >= 0) {
     		if(subPath.indexOf("/public/") >= 0) chain.doFilter(request, response);
-    		//else if(subPath.indexOf("/public") >= 0) resp.sendRedirect("/marmitariasj/public/");
     		else resp.sendRedirect("/marmitariasj/public/"+subPath.substring(1));
     	
     	} else {

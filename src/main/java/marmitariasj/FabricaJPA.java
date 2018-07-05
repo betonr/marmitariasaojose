@@ -6,7 +6,7 @@ import javax.persistence.Persistence;
 
 public class FabricaJPA {
 
-	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("marmitaria-postgres");
+	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("marmitaria");
 	
 	public EntityManager getEntityManager() {
 		return emf.createEntityManager();

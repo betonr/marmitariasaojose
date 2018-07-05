@@ -45,7 +45,7 @@ class PedidoController {
 			
 			let vm = this
 			$.ajax({
-	            url: '/marmitariasj/solicitacao',
+	            url: '/marmitariasj/usuario/solicitacao',
 	            type: 'post',
 	            dataType: 'json',
 	            contentType: 'application/json;charset=UTF-8',
@@ -84,7 +84,7 @@ class PedidoController {
 			
 			let vm = this
 			$.ajax({
-	            url: '/marmitariasj/solicitacao?data='+dateEsc,
+	            url: '/marmitariasj/usuario/solicitacao?data='+dateEsc,
 	            type: 'get',
 	            dataType: 'json',
 	            contentType: 'application/json;charset=UTF-8',
@@ -114,7 +114,7 @@ class PedidoController {
 		
 		let vm = this
 		$.ajax({
-            url: '/marmitariasj/solicitacao',
+            url: '/marmitariasj/usuario/solicitacao',
             type: 'put',
             dataType: 'json',
             contentType: 'application/json;charset=UTF-8',
@@ -131,7 +131,7 @@ class PedidoController {
 	removerPedido(indiceSolicitacao) {
 		let vm = this
 		$.ajax({
-            url: '/marmitariasj/solicitacao?id='+indiceSolicitacao,
+            url: '/marmitariasj/usuario/solicitacao?id='+indiceSolicitacao,
             type: 'delete',
             dataType: 'json',
             contentType: 'application/json;charset=UTF-8',

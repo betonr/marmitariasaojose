@@ -6,13 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name="usuario")
+@Entity
 public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "serial")
 	private Long id;
+	@Column(name = "login", unique = true, length = 50, nullable = false)
 	private String login;
 	private String senha;
 	private String cep;
